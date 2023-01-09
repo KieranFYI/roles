@@ -9,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use KieranFYI\Roles\Core\Models\Roles\Role;
 use KieranFYI\Roles\Http\Requests\UpdateRequest;
-use KieranFYI\UserUI\Policies\UserPolicy;
 
 class UserRoleController extends Controller
 {
@@ -23,7 +22,7 @@ class UserRoleController extends Controller
      */
     public function __construct()
     {
-        $this->authorizeResource(UserPolicy::class, 'user', ['only' => ['update']]);
+        $this->authorizeResource(User::class, 'user', ['only' => ['update']]);
     }
 
     /**
