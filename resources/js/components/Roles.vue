@@ -88,6 +88,9 @@ export default {
                 })
         }
     },
+    created() {
+        this.update = this.$lodash.debounce(this.update, 300);
+    },
     beforeMount() {
         this.userRoles = this.userRolesData;
     }
