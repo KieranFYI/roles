@@ -27,8 +27,8 @@ class RolesPackageServiceProvider extends ServiceProvider
         $this->loadViewsFrom($root . '/resources/views', 'roles');
         $this->loadRoutesFrom($root . '/routes/web.php');
 
-        class_alias(config('auth.providers.users.model'), 'KieranFYI\\Roles\\Models\\User');;
-        Gate::policy('KieranFYI\\UserUI\\Models\\User', UserPolicy::class);
+        class_alias(config('auth.providers.users.model'), 'KieranFYI\\Roles\\Models\\User');
+        Gate::policy('KieranFYI\\Roles\\Models\\User', UserPolicy::class);
 
         Event::listen(RegisterUserInfoEvent::class, RegisterUserInfoListener::class);
     }

@@ -2,8 +2,7 @@
 
 namespace KieranFYI\Roles\Http\Controllers;
 
-use AppUser as User;
-use Illuminate\Auth\Access\AuthorizationException;
+use KieranFYI\Roles\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
@@ -33,7 +32,6 @@ class UserRoleController extends Controller
      * @param UpdateRequest $request
      * @param User $user
      * @return JsonResponse
-     * @throws AuthorizationException
      */
     public function update(UpdateRequest $request, User $user): JsonResponse
     {
