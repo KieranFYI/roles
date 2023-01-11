@@ -4,7 +4,7 @@
         <span class="spinner-border spinner-border-sm float-right" role="status" v-if="loading"></span>
         <template v-else-if="edit">
             <i class="fas fa-save float-right text-success" style="cursor: pointer" @click="update"></i>
-            <i class="fas fa-times float-right text-danger mr-1" style="cursor: pointer"
+            <i class="far fa-trash-alt float-right text-danger mr-1" style="cursor: pointer"
                @click="edit = false"></i>
         </template>
         <i class="fas fa-pencil-alt float-right text-primary" style="cursor: pointer" @click="toggle"
