@@ -19,7 +19,10 @@ class RolesPackageServiceProvider extends ServiceProvider
     public function boot()
     {
         $root = __DIR__ . '/../..';
-
+        config([
+            'ziggy.groups.admins-roles' => ['admin.roles.*'],
+            'ziggy.groups.admins-roles-api' => ['admin.api.roles.*', 'admin.api.users.roles.*'],
+        ]);
         $this->publishes([
             $root . '/public' => public_path('vendor/kieranfyi/roles'),
         ], ['laravel-assets']);

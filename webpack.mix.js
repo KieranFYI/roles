@@ -20,5 +20,6 @@ mix
     .options({
         processCssUrls: false
     })
+    .disableNotifications()
     .vue({ version: 3 })
     .version();

@@ -26,11 +26,6 @@ class RegisterUserInfoListener
         return RegisterUserComponent::create()
             ->view('roles::info', [
                 'user' => $user,
-                'roles' => Role::orderBy('display_order', 'desc')
-                    ->whereHas('permissions', function (Builder $query) {
-                        $query->where('power', '>', Auth::user()->power);
-                    }, 0)
-                    ->get(),
             ]);
     }
 }
