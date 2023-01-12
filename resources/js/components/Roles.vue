@@ -1,7 +1,8 @@
 <template>
     <h6 class="text-center">
         Roles
-        <span class="spinner-border spinner-border-sm float-right" role="status" v-if="loading || !this.roles.length"></span>
+        <span class="spinner-border spinner-border-sm float-right" role="status"
+              v-if="loading || !this.roles.length"></span>
         <template v-else-if="user.access.edit">
             <template v-if="edit">
                 <i class="fas fa-save float-right text-success" style="cursor: pointer" @click="update"></i>
@@ -21,10 +22,17 @@
     </div>
 
     <div v-else class="text-center">
-        <span class="badge badge-primary mr-1"
-              v-for="item in userRoles" v-if="userRoles.length">
-        {{ item.name }}
-        </span>
+        <div class="d-flex justify-content-center" v-if="loading">
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <template v-else-if="userRoles.length !== 0">
+            <span class="badge badge-primary mr-1"
+                  v-for="item in userRoles">
+            {{ item.name }}
+            </span>
+        </template>
         <span class="text-warning" v-else>
             No roles assigned
         </span>
@@ -41,7 +49,7 @@ export default {
     },
     data() {
         return {
-            loading: false,
+            loading: true,
             edit: false,
             rolesToSave: [],
             userRoles: [],
@@ -81,9 +89,9 @@ export default {
             this.$axios
                 .get(route('admin.api.users.roles.show', {user: this.user}))
                 .then((response) => {
-                    this.rolesToSave = this.$lodash.map(response.data, 'id')
-                })
-                .then(() => {
+                    this.userRoles = response.data;
+                    this.rolesToSave = this.$lodash.map(this.userRoles, 'id');
+
                     this.$axios
                         .get(route('admin.api.roles.index'))
                         .then((response) => {
