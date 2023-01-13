@@ -8,18 +8,16 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Carbon;
 use KieranFYI\Misc\Exceptions\CacheableException;
+use KieranFYI\Misc\Traits\ResponseCacheable;
 use KieranFYI\Roles\Core\Models\Roles\Role;
-use KieranFYI\Roles\Core\Traits\BuildsAccess;
 use KieranFYI\Roles\Http\Requests\SearchRequest;
-use Throwable;
 
 class RoleAPIController extends Controller
 {
     use AuthorizesRequests;
     use ValidatesRequests;
-    use BuildsAccess;
+    use ResponseCacheable;
 
     /**
      * Create the controller instance.
@@ -40,10 +38,6 @@ class RoleAPIController extends Controller
     public function index(): JsonResponse
     {
         $roles = Role::get();
-        $roles->transform(function (Role $role) {
-            $this->buildAccess($role);
-            return $role;
-        });
         return response()->json($roles);
     }
 
@@ -53,11 +47,11 @@ class RoleAPIController extends Controller
      * @param Request $request
      * @param Role $role
      * @return JsonResponse
-     * @throws Throwable
+     * @throws CacheableException
      */
     public function show(Request $request, Role $role): JsonResponse
     {
-        $this->buildAccess($role);
+        $this->setLastModified($role->updated_at);
         return response()->json($role);
     }
 
@@ -66,6 +60,7 @@ class RoleAPIController extends Controller
      *
      * @param SearchRequest $request
      * @return JsonResponse
+     * @throws CacheableException
      */
     public function search(SearchRequest $request): JsonResponse
     {
@@ -81,13 +76,7 @@ class RoleAPIController extends Controller
             });
         });
 
-        $roles->get();
-        $roles->transform(function (Role $role) {
-            $this->buildAccess($role);
-            return $role;
-        });
-
-        return response()->json($roles);
+        return response()->json($roles->get());
     }
 
     /**

@@ -1,6 +1,5 @@
 <div id="vuejs-roles">
-    <roles :user='@json($user)'
-    />
+    <roles :user='@json($user)' />
 </div>
 
 @pushOnce('js')

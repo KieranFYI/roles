@@ -2,9 +2,6 @@
 
 namespace KieranFYI\Roles\Listeners;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
-use KieranFYI\Roles\Core\Models\Roles\Role;
 use KieranFYI\Roles\Core\Traits\Roles\HasRolesTrait;
 use KieranFYI\Roles\Models\User;
 use KieranFYI\UserUI\Services\RegisterUserComponent;

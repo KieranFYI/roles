@@ -6,8 +6,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use KieranFYI\Misc\Traits\ResponseCacheable;
 use KieranFYI\Roles\Core\Models\Roles\Role;
-use KieranFYI\Roles\Core\Traits\BuildsAccess;
 use KieranFYI\Roles\Core\Traits\Roles\HasRolesTrait;
 use KieranFYI\Roles\Http\Requests\UpdateRequest;
 use KieranFYI\Roles\Models\User;
@@ -16,7 +16,7 @@ class UserRoleAPIController extends Controller
 {
     use AuthorizesRequests;
     use ValidatesRequests;
-    use BuildsAccess;
+    use ResponseCacheable;
 
     /**
      * Create the controller instance.
@@ -33,16 +33,14 @@ class UserRoleAPIController extends Controller
      *
      * @param User $user
      * @return JsonResponse
+     * @throws \KieranFYI\Misc\Exceptions\CacheableException
      */
     public function show(User $user): JsonResponse
     {
         abort_unless(in_array(HasRolesTrait::class, class_uses_recursive($user)), 501);
 
         $user->load('roles');
-        $user->roles->transform(function (Role $role) {
-            $this->buildAccess($role);
-            return $role;
-        });
+        $this->setLastModified($user->roles->max('updated_at'));
         return response()->json($user->roles);
     }
 
