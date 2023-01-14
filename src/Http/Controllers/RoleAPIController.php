@@ -8,10 +8,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use KieranFYI\Misc\Exceptions\CacheableException;
 use KieranFYI\Misc\Traits\ResponseCacheable;
 use KieranFYI\Roles\Core\Models\Roles\Role;
 use KieranFYI\Roles\Http\Requests\SearchRequest;
+use Throwable;
 
 class RoleAPIController extends Controller
 {
@@ -33,10 +33,11 @@ class RoleAPIController extends Controller
      * Display a listing of the resource.
      *
      * @return JsonResponse
-     * @throws CacheableException
+     * @throws Throwable
      */
     public function index(): JsonResponse
     {
+        $this->cached();
         $roles = Role::get();
         return response()->json($roles);
     }
@@ -47,11 +48,11 @@ class RoleAPIController extends Controller
      * @param Request $request
      * @param Role $role
      * @return JsonResponse
-     * @throws CacheableException
+     * @throws Throwable
      */
     public function show(Request $request, Role $role): JsonResponse
     {
-        $this->setLastModified($role->updated_at);
+        $this->cached();
         return response()->json($role);
     }
 
@@ -60,10 +61,11 @@ class RoleAPIController extends Controller
      *
      * @param SearchRequest $request
      * @return JsonResponse
-     * @throws CacheableException
+     * @throws Throwable
      */
     public function search(SearchRequest $request): JsonResponse
     {
+        $this->cached();
         $roles = Role::query();
 
         $validated = $request->validated();

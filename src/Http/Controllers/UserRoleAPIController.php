@@ -2,6 +2,7 @@
 
 namespace KieranFYI\Roles\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
@@ -11,6 +12,7 @@ use KieranFYI\Roles\Core\Models\Roles\Role;
 use KieranFYI\Roles\Core\Traits\Roles\HasRolesTrait;
 use KieranFYI\Roles\Http\Requests\UpdateRequest;
 use KieranFYI\Roles\Models\User;
+use Throwable;
 
 class UserRoleAPIController extends Controller
 {
@@ -33,14 +35,14 @@ class UserRoleAPIController extends Controller
      *
      * @param User $user
      * @return JsonResponse
-     * @throws \KieranFYI\Misc\Exceptions\CacheableException
+     * @throws Throwable
      */
     public function show(User $user): JsonResponse
     {
         abort_unless(in_array(HasRolesTrait::class, class_uses_recursive($user)), 501);
+        $this->cached();
 
         $user->load('roles');
-        $this->setLastModified($user->roles->max('updated_at'));
         return response()->json($user->roles);
     }
 
