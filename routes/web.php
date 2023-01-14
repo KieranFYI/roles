@@ -4,10 +4,8 @@ use Illuminate\Support\Facades\Route;
 use KieranFYI\Admin\Facades\Admin;
 use KieranFYI\Roles\Http\Controllers\RoleAPIController;
 use KieranFYI\Roles\Http\Controllers\UserRoleAPIController;
-use KieranFYI\UserUI\Http\Controllers\UserAPIController;
 
-Admin::route()
-    ->group(function () {
+Admin::route(function () {
         Route::prefix('api')
             ->name('api.')
             ->group(function () {
