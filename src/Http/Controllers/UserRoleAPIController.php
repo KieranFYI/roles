@@ -2,7 +2,6 @@
 
 namespace KieranFYI\Roles\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;

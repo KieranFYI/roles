@@ -1,39 +1,39 @@
 <template>
     <h6 class="text-center">
         Roles
-        <span class="spinner-border spinner-border-sm float-right" role="status"
-              v-if="loading || !this.roles.length"></span>
+        <span v-if="loading || !this.roles.length" class="spinner-border spinner-border-sm float-right"
+              role="status"></span>
         <template v-else-if="user.access.edit">
             <template v-if="edit">
                 <i class="fas fa-save float-right text-success" style="cursor: pointer" @click="update"></i>
-                <i class="far fa-trash-alt float-right text-danger mr-1" style="cursor: pointer"
+                <i class="fas fa-times float-right text-danger mr-1" style="cursor: pointer"
                    @click="edit = false"></i>
             </template>
-            <i class="fas fa-pencil-alt float-right text-primary" style="cursor: pointer" @click="toggle"
-               v-else></i>
+            <i v-else class="fas fa-pencil-alt float-right text-primary" style="cursor: pointer"
+               @click="toggle"></i>
         </template>
     </h6>
 
     <div v-if="edit">
         <label v-for="item in roles" :key="item.id" class="mr-3">
-            <input type="checkbox" v-model="rolesToSave" :value="item.id" :disabled="loading"/>
+            <input v-model="rolesToSave" :disabled="loading" :value="item.id" type="checkbox"/>
             {{ item.name }}
         </label>
     </div>
 
     <div v-else class="text-center">
-        <div class="d-flex justify-content-center" v-if="loading">
+        <div v-if="loading" class="d-flex justify-content-center">
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
         <template v-else-if="userRoles.length !== 0">
-            <span class="badge badge-primary mr-1"
-                  v-for="item in userRoles">
+            <span v-for="item in userRoles"
+                  class="badge badge-primary mr-1">
             {{ item.name }}
             </span>
         </template>
-        <span class="text-warning" v-else>
+        <span v-else class="text-warning">
             No roles assigned
         </span>
     </div>
